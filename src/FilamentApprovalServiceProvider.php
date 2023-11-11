@@ -6,7 +6,7 @@ use Spatie\LaravelPackageTools\Package;
 
 class FilamentApprovalServiceProvider extends PackageServiceProvider
 {
-    protected $name = 'filament-approval';
+    protected string $name = 'filament-approval';
 
     public function configurePackage(Package $package): void
     {
