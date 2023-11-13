@@ -2,6 +2,7 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources;
 
+use App\Models\User;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationRelations;
@@ -19,13 +20,23 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class ModificationResource extends Resource
 {
     protected static ?string $model = Modification::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __(config('filament-approval.navigationGroup', 'Modifications'));
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return config('filament-approval.navigationSort', 1);
+    }
 
     public static function sidebar(Modification $record): FilamentPageSidebar
     {
