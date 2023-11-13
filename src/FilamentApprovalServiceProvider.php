@@ -12,6 +12,7 @@ class FilamentApprovalServiceProvider extends PackageServiceProvider
     {
         $package
             ->name($this->name)
-            ->hasConfigFile();
+            ->hasConfigFile()
+            ->hasViews();
     }
 }
