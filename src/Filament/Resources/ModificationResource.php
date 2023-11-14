@@ -98,7 +98,9 @@ class ModificationResource extends Resource
             ->defaultSort(ModificationResourceSchema::getTableDefaultSortColumn(), ModificationResourceSchema::getTableDefaultSortDirection())
             ->filters(ModificationResourceSchema::getTableFilter())
             ->actions(ModificationResourceSchema::getTableActions())
-            ->bulkActions(ModificationResourceSchema::getTableBulkActions());
+            ->bulkActions(ModificationResourceSchema::getTableBulkActions())
+            ->filtersFormWidth(ModificationResourceSchema::getFiltersFormWidth())
+            ->filtersFormColumns(ModificationResourceSchema::getFilterFormColumns());
     }
 
     public static function infolist(Infolist $infolist): Infolist

@@ -2,11 +2,13 @@
 
 namespace AymanAlhattami\FilamentApproval;
 
+use Approval\Enums\ActionEnum;
 use Approval\Enums\ModificationStatusEnum;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Infolists\Components\JsonEntry;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\IconEntry;
@@ -169,10 +171,21 @@ class ModificationResourceSchema
                 })
                 ->searchable()
                 ->multiple(),
+            SelectFilter::make('action')
+                ->options(ActionEnum::toArray())
+                ->searchable()
+                ->multiple(),
+            SelectFilter::make('status')
+                ->options(ModificationStatusEnum::toArray())
+                ->searchable()
+                ->multiple(),
             Filter::make('created_at')
+                ->columnSpanFull()
                 ->form([
-                    DatePicker::make('created_from'),
-                    DatePicker::make('created_until')->default(now()),
+                    Grid::make(2)->schema([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until')->default(now()),
+                    ])
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -196,5 +209,15 @@ class ModificationResourceSchema
     public static function getTableDefaultSortDirection(): string
     {
         return 'desc';
+    }
+
+    public static function getFiltersFormWidth(): string
+    {
+        return '2xl';
+    }
+
+    public static function getFilterFormColumns(): string
+    {
+        return 2;
     }
 }
