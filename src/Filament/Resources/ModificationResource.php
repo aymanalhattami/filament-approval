@@ -2,6 +2,7 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources;
 
+use Approval\Enums\ModificationStatusEnum;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationRelations;
@@ -113,8 +114,7 @@ class ModificationResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('active')
-                    ->boolean()
+                Tables\Columns\TextColumn::make('status')
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
@@ -183,7 +183,7 @@ class ModificationResource extends Resource
                         ->icon('heroicon-m-check')
                         ->requiresConfirmation()
                         ->visible(function ($record) {
-                            return $record->active;
+                            return $record->status == ModificationStatusEnum::Pending->value;
                         }),
                     Tables\Actions\Action::make('disapprove')
                         ->translateLabel()
@@ -198,7 +198,7 @@ class ModificationResource extends Resource
                         ->icon('heroicon-m-x-mark')
                         ->requiresConfirmation()
                         ->visible(function ($record) {
-                            return $record->active;
+                            return $record->status == ModificationStatusEnum::Pending->value;
                         }),
                 ]),
             ])
@@ -231,7 +231,7 @@ class ModificationResource extends Resource
                             ->label('Id')
                             ->translateLabel(),
                     ]),
-                    IconEntry::make('active')->translateLabel()->boolean(),
+                    IconEntry::make('action')->translateLabel(),
                     IconEntry::make('action')->translateLabel(),
                     TextEntry::make('approvers_required')->translateLabel(),
                     TextEntry::make('disapprovers_required')->translateLabel(),
