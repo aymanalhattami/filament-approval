@@ -17,6 +17,7 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,6 +37,25 @@ class ModificationResource extends Resource
     public static function getNavigationSort(): ?int
     {
         return config('filament-approval.navigationSort', 1);
+    }
+
+    public static function getNavigationItems(): array
+    {
+        return [
+            NavigationItem::make(static::getNavigationLabel())
+                ->group(static::getNavigationGroup())
+                ->icon(static::getNavigationIcon())
+                ->activeIcon(static::getActiveNavigationIcon())
+                ->isActiveWhen(function(){
+                    return request()->routeIs(static::getRouteBaseName() . '.index')
+                        || request()->routeIs(static::getRouteBaseName() . '.view')
+                        || request()->routeIs(static::getRouteBaseName() . '.relations')
+                        || request()->routeIs(static::getRouteBaseName() . '.media');
+                })
+                ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                ->sort(static::getNavigationSort())
+                ->url(static::getNavigationUrl()),
+        ];
     }
 
     public static function sidebar(Modification $record): FilamentPageSidebar
