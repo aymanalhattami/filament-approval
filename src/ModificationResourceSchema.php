@@ -14,6 +14,7 @@ use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Components\Tab;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -219,5 +220,39 @@ class ModificationResourceSchema
     public static function getFilterFormColumns(): string
     {
         return 2;
+    }
+
+    public static function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All')
+                ->modifyQueryUsing(function ($query) {
+                    return $query;
+                }),
+            'pending' => Tab::make('Pending')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', ModificationStatusEnum::Pending->value);
+                }),
+            'approved' => Tab::make('Approved')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', ModificationStatusEnum::Approved->value);
+                }),
+            'disapproved' => Tab::make('Disapproved')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', ModificationStatusEnum::Disapproved->value);
+                }),
+            'create' => Tab::make('Creations')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('action', ActionEnum::Create->value);
+                }),
+            'update' => Tab::make('Update')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('action', ActionEnum::Update->value);
+                }),
+            'deletion' => Tab::make('Deletion')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('action', ActionEnum::Delete->value);
+                }),
+        ];
     }
 }
