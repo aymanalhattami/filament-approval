@@ -236,23 +236,28 @@ class ModificationResourceSchema
             'approved' => Tab::make('Approved')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', ModificationStatusEnum::Approved->value);
-                }),
+                })
+                ->icon('heroicon-o-check'),
             'disapproved' => Tab::make('Disapproved')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', ModificationStatusEnum::Disapproved->value);
-                }),
+                })
+                ->icon('heroicon-o-x-mark'),
             'create' => Tab::make('Creations')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('action', ActionEnum::Create->value);
-                }),
+                })
+                ->icon('heroicon-o-plus'),
             'update' => Tab::make('Update')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('action', ActionEnum::Update->value);
-                }),
+                })
+                ->icon('heroicon-o-pencil'),
             'deletion' => Tab::make('Deletion')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('action', ActionEnum::Delete->value);
-                }),
+                })
+                ->icon('heroicon-o-trash'),
         ];
     }
 }
