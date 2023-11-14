@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 class ModificationResource extends Resource
 {
     protected static ?string $model = Modification::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationGroup(): ?string
@@ -46,11 +47,11 @@ class ModificationResource extends Resource
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
                 ->activeIcon(static::getActiveNavigationIcon())
-                ->isActiveWhen(function(){
-                    return request()->routeIs(static::getRouteBaseName() . '.index')
-                        || request()->routeIs(static::getRouteBaseName() . '.view')
-                        || request()->routeIs(static::getRouteBaseName() . '.relations')
-                        || request()->routeIs(static::getRouteBaseName() . '.media');
+                ->isActiveWhen(function () {
+                    return request()->routeIs(static::getRouteBaseName().'.index')
+                        || request()->routeIs(static::getRouteBaseName().'.view')
+                        || request()->routeIs(static::getRouteBaseName().'.relations')
+                        || request()->routeIs(static::getRouteBaseName().'.media');
                 })
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->sort(static::getNavigationSort())
@@ -62,28 +63,28 @@ class ModificationResource extends Resource
     {
         return FilamentPageSidebar::make()
             ->setTitle($record->modifiable_type)
-            ->setDescription(__('Id') . ":" . $record->id)
+            ->setDescription(__('Id').':'.$record->id)
             ->setNavigationItems([
                 PageNavigationItem::make(__('View'))
                     ->url(function () use ($record) {
                         return ViewModification::getUrl(['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.view');
+                        return request()->routeIs(static::getRouteBaseName().'.view');
                     })->visible(true),
                 PageNavigationItem::make(__('Relations'))
                     ->url(function () use ($record) {
                         return ListModificationRelations::getUrl(['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.relations');
+                        return request()->routeIs(static::getRouteBaseName().'.relations');
                     })->visible(true),
                 PageNavigationItem::make(__('Media'))
                     ->url(function () use ($record) {
                         return ListModificationMedia::getUrl(['record' => $record->id]);
                     })->icon('heroicon-o-rectangle-stack')
                     ->isActiveWhen(function () {
-                        return request()->routeIs(static::getRouteBaseName() . '.media');
+                        return request()->routeIs(static::getRouteBaseName().'.media');
                     })->visible(true),
             ]);
     }
@@ -98,13 +99,13 @@ class ModificationResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('modifiable_type')
                     ->label('Modifiable')
-                    ->description(fn(Modification $record) => $record->modifiable_id)
+                    ->description(fn (Modification $record) => $record->modifiable_id)
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('modifier_type')
                     ->label('Modifier')
-                    ->description(fn(Modification $record) => $record->modifier_id)
+                    ->description(fn (Modification $record) => $record->modifier_id)
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
@@ -136,14 +137,14 @@ class ModificationResource extends Resource
             ->defaultSort('id', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('modifiable_type')
-                    ->options(function(){
+                    ->options(function () {
                         return Modification::query()
                             ->distinct()->pluck('modifiable_type', 'modifiable_type');
                     })
-                ->searchable()
-                ->multiple(),
+                    ->searchable()
+                    ->multiple(),
                 Tables\Filters\SelectFilter::make('modifier_type')
-                    ->options(function(){
+                    ->options(function () {
                         return Modification::query()
                             ->distinct()->pluck('modifier_type', 'modifier_type');
                     })
@@ -164,7 +165,7 @@ class ModificationResource extends Resource
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -200,7 +201,7 @@ class ModificationResource extends Resource
                         ->visible(function ($record) {
                             return $record->active;
                         }),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -237,9 +238,9 @@ class ModificationResource extends Resource
                     TextEntry::make('disapprovers_required')->translateLabel(),
                     TextEntry::make('created_at')->translateLabel(),
                     JsonEntry::make('modifications')
-                    ->translateLabel()
-                    ->columnSpanFull()
-                ])->columns(2)
+                        ->translateLabel()
+                        ->columnSpanFull(),
+                ])->columns(2),
         ]);
     }
 

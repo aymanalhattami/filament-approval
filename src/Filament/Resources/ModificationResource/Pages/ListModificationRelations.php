@@ -20,11 +20,13 @@ use Filament\Tables\Table;
 
 class ListModificationRelations extends Page implements HasTable
 {
-    use InteractsWithTable,
-        HasPageSidebar;
+    use HasPageSidebar,
+        InteractsWithTable;
 
     protected static string $resource = ModificationResource::class;
+
     protected static string $view = 'filament-approval::filament.resources.modification-resource.pages.list-modification-relations';
+
     public Modification $record;
 
     public function table(Table $table): Table
@@ -51,7 +53,7 @@ class ListModificationRelations extends Page implements HasTable
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->searchable()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->actions([
@@ -66,8 +68,8 @@ class ListModificationRelations extends Page implements HasTable
                             TextEntry::make('created_at'),
                             JsonEntry::make('modifications')
                                 ->translateLabel()
-                                ->columnSpanFull()
-                        ])
+                                ->columnSpanFull(),
+                        ]),
                     ]),
                 Action::make('media')
                     ->modalContent(function ($record) {
@@ -76,7 +78,7 @@ class ListModificationRelations extends Page implements HasTable
                     })
                     ->modalHeading('')
                     ->modalSubmitAction(false)
-                    ->modalCancelActionLabel('Close')
+                    ->modalCancelActionLabel('Close'),
             ]);
     }
 }

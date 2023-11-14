@@ -6,10 +6,7 @@ use Approval\Models\Modification;
 use Approval\Models\ModificationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
 use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\Page;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -19,10 +16,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ListModificationMedia extends Page implements HasTable
 {
-    use InteractsWithTable, HasPageSidebar;
+    use HasPageSidebar, InteractsWithTable;
 
     protected static string $resource = ModificationResource::class;
+
     protected static string $view = 'filament-approval::filament.resources.modification-resource.pages.list-modification-media';
+
     public Modification $record;
 
     public function table(Table $table): Table
@@ -46,7 +45,7 @@ class ListModificationMedia extends Page implements HasTable
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->searchable()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('id', 'desc');
     }

@@ -4,7 +4,6 @@ namespace AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResourc
 
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
 use AymanAlhattami\FilamentPageWithSidebar\Traits\HasPageSidebar;
-use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewModification extends ViewRecord

@@ -1,8 +1,9 @@
 <?php
 
 namespace AymanAlhattami\FilamentApproval;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentApprovalServiceProvider extends PackageServiceProvider
 {

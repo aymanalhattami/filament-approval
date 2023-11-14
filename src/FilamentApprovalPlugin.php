@@ -18,10 +18,10 @@ class FilamentApprovalPlugin implements Plugin
     {
         $panel
             ->resources([
-                ModificationResource::class
+                ModificationResource::class,
             ])
             ->pages([
-                ListModificationRelationMedia::class
+                ListModificationRelationMedia::class,
             ]);
     }
 

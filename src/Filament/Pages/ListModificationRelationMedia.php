@@ -2,7 +2,6 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Pages;
 
-use Approval\Models\Modification;
 use Approval\Models\ModificationMedia;
 use Approval\Models\ModificationRelation;
 use Filament\Pages\Page;
@@ -18,7 +17,9 @@ class ListModificationRelationMedia extends Page implements HasTable
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static string $view = 'filament-approval::filament.pages.list-modification-relation-media';
+
     protected static bool $shouldRegisterNavigation = false;
 
     public ModificationRelation $record;
@@ -43,7 +44,7 @@ class ListModificationRelationMedia extends Page implements HasTable
                         return Media::find($record->media_id)->getFullUrl();
                     }),
                 TextColumn::make('action'),
-                TextColumn::make('created_at')
+                TextColumn::make('created_at'),
             ])
             ->defaultSort('id', 'desc');
     }

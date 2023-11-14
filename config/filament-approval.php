@@ -5,5 +5,5 @@
  */
 return [
     'navigationGroup' => 'Modifications',
-    'navigationSort' => 1
+    'navigationSort' => 1,
 ];

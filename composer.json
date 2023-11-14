@@ -58,5 +58,8 @@
             "type": "path",
             "url": "../laravel-approval"
         }
-    ]
+    ],
+    "require-dev": {
+        "laravel/pint": "dev-main"
+    }
 }
