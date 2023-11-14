@@ -109,8 +109,7 @@ class ModificationResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_update')
-                    ->boolean()
+                Tables\Columns\TextColumn::make('action')
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
@@ -233,7 +232,7 @@ class ModificationResource extends Resource
                             ->translateLabel(),
                     ]),
                     IconEntry::make('active')->translateLabel()->boolean(),
-                    IconEntry::make('is_update')->translateLabel()->boolean(),
+                    IconEntry::make('action')->translateLabel(),
                     TextEntry::make('approvers_required')->translateLabel(),
                     TextEntry::make('disapprovers_required')->translateLabel(),
                     TextEntry::make('created_at')->translateLabel(),
