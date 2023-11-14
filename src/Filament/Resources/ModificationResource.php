@@ -2,7 +2,6 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources;
 
-use App\Models\User;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModificationRelations;
@@ -11,6 +10,7 @@ use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Page
 use AymanAlhattami\FilamentApproval\Infolists\Components\JsonEntry;
 use AymanAlhattami\FilamentPageWithSidebar\FilamentPageSidebar;
 use AymanAlhattami\FilamentPageWithSidebar\PageNavigationItem;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\IconEntry;
@@ -135,7 +135,36 @@ class ModificationResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-
+                Tables\Filters\SelectFilter::make('modifiable_type')
+                    ->options(function(){
+                        return Modification::query()
+                            ->distinct()->pluck('modifiable_type', 'modifiable_type');
+                    })
+                ->searchable()
+                ->multiple(),
+                Tables\Filters\SelectFilter::make('modifier_type')
+                    ->options(function(){
+                        return Modification::query()
+                            ->distinct()->pluck('modifier_type', 'modifier_type');
+                    })
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until')->default(now()),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
