@@ -9,6 +9,7 @@ use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Page
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ListModifications;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages\ViewModification;
 use AymanAlhattami\FilamentApproval\Infolists\Components\JsonEntry;
+use AymanAlhattami\FilamentApproval\ModificationResourceSchema;
 use AymanAlhattami\FilamentPageWithSidebar\FilamentPageSidebar;
 use AymanAlhattami\FilamentPageWithSidebar\PageNavigationItem;
 use Filament\Forms\Components\DatePicker;
@@ -93,154 +94,16 @@ class ModificationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('modifiable_type')
-                    ->label('Modifiable')
-                    ->description(fn (Modification $record) => $record->modifiable_id)
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('modifier_type')
-                    ->label('Modifier')
-                    ->description(fn (Modification $record) => $record->modifier_id)
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('action')
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->translateLabel()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('has_relation')
-                    ->translateLabel()
-                    ->state(function ($record) {
-                        return $record->modificationRelations()->exists();
-                    })
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('has_media')
-                    ->translateLabel()
-                    ->state(function ($record) {
-                        return $record->modificationMedias()->exists();
-                    })
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->searchable(),
-            ])
-            ->defaultSort('id', 'desc')
-            ->filters([
-                Tables\Filters\SelectFilter::make('modifiable_type')
-                    ->options(function () {
-                        return Modification::query()
-                            ->distinct()->pluck('modifiable_type', 'modifiable_type');
-                    })
-                    ->searchable()
-                    ->multiple(),
-                Tables\Filters\SelectFilter::make('modifier_type')
-                    ->options(function () {
-                        return Modification::query()
-                            ->distinct()->pluck('modifier_type', 'modifier_type');
-                    })
-                    ->searchable()
-                    ->multiple(),
-                Tables\Filters\Filter::make('created_at')
-                    ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until')->default(now()),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                            );
-                    }),
-            ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make('view')
-                        ->translateLabel(),
-                    Tables\Actions\Action::make('approve')
-                        ->translateLabel()
-                        ->form([
-                            Textarea::make('reason')
-                                ->required()
-                                ->maxLength(255),
-                        ])
-                        ->action(function ($record, $data) {
-                            Auth::user()->approve($record, $data['reason']);
-                        })
-                        ->icon('heroicon-m-check')
-                        ->requiresConfirmation()
-                        ->visible(function ($record) {
-                            return $record->status == ModificationStatusEnum::Pending->value;
-                        }),
-                    Tables\Actions\Action::make('disapprove')
-                        ->translateLabel()
-                        ->form([
-                            Textarea::make('reason')
-                                ->required()
-                                ->maxLength(255),
-                        ])
-                        ->action(function ($record, $data) {
-                            Auth::user()->disapprove($record, $data['reason']);
-                        })
-                        ->icon('heroicon-m-x-mark')
-                        ->requiresConfirmation()
-                        ->visible(function ($record) {
-                            return $record->status == ModificationStatusEnum::Pending->value;
-                        }),
-                ]),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->columns(ModificationResourceSchema::getTableColumns())
+            ->defaultSort(ModificationResourceSchema::getTableDefaultSortColumn(), ModificationResourceSchema::getTableDefaultSortDirection())
+            ->filters(ModificationResourceSchema::getTableFilter())
+            ->actions(ModificationResourceSchema::getTableActions())
+            ->bulkActions(ModificationResourceSchema::getTableBulkActions());
     }
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist->schema([
-            Section::make()
-                ->schema([
-                    Fieldset::make('Modifier')
-                        ->schema([
-                            TextEntry::make('modifier_type')
-                                ->label('Type')
-                                ->translateLabel(),
-                            TextEntry::make('modifier_id')
-                                ->label('Id')
-                                ->translateLabel(),
-                        ]),
-                    Fieldset::make('Modifiable')->schema([
-                        TextEntry::make('modifiable_type')
-                            ->label('Type')
-                            ->translateLabel(),
-                        TextEntry::make('modifiable_id')
-                            ->label('Id')
-                            ->translateLabel(),
-                    ]),
-                    IconEntry::make('action')->translateLabel(),
-                    IconEntry::make('action')->translateLabel(),
-                    TextEntry::make('approvers_required')->translateLabel(),
-                    TextEntry::make('disapprovers_required')->translateLabel(),
-                    TextEntry::make('created_at')->translateLabel(),
-                    JsonEntry::make('modifications')
-                        ->translateLabel()
-                        ->columnSpanFull(),
-                ])->columns(2),
-        ]);
+        return $infolist->schema(ModificationResourceSchema::getInfolist());
     }
 
     public static function getPages(): array
