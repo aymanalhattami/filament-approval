@@ -6,4 +6,7 @@
 return [
     'navigationGroup' => 'Modifications',
     'navigationSort' => 1,
+
+    'approvalNavigationGroup' => 'Modifications',
+    'approvalNavigationSort' => 2,
 ];
