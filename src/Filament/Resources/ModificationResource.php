@@ -98,14 +98,41 @@ class ModificationResource extends Resource
             ->defaultSort(ModificationResourceSchema::getTableDefaultSortColumn(), ModificationResourceSchema::getTableDefaultSortDirection())
             ->filters(ModificationResourceSchema::getTableFilter())
             ->actions(ModificationResourceSchema::getTableActions())
-            ->bulkActions(ModificationResourceSchema::getTableBulkActions())
-            ->filtersFormWidth(ModificationResourceSchema::getFiltersFormWidth())
-            ->filtersFormColumns(ModificationResourceSchema::getFilterFormColumns());
+            ->bulkActions(ModificationResourceSchema::getTableBulkActions());
     }
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist->schema(ModificationResourceSchema::getInfolist());
+        return $infolist->schema([
+            Section::make()
+                ->schema([
+                    Fieldset::make('Modifier')
+                        ->schema([
+                            TextEntry::make('modifier_type')
+                                ->label('Type')
+                                ->translateLabel(),
+                            TextEntry::make('modifier_id')
+                                ->label('Id')
+                                ->translateLabel(),
+                        ]),
+                    Fieldset::make('Modifiable')->schema([
+                        TextEntry::make('modifiable_type')
+                            ->label('Type')
+                            ->translateLabel(),
+                        TextEntry::make('modifiable_id')
+                            ->label('Id')
+                            ->translateLabel(),
+                    ]),
+                    IconEntry::make('action')->translateLabel(),
+                    IconEntry::make('action')->translateLabel(),
+                    TextEntry::make('approvers_required')->translateLabel(),
+                    TextEntry::make('disapprovers_required')->translateLabel(),
+                    TextEntry::make('created_at')->translateLabel(),
+                    JsonEntry::make('modifications')
+                        ->translateLabel()
+                        ->columnSpanFull(),
+                ])->columns(2),
+        ]);
     }
 
     public static function getPages(): array

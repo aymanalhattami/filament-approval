@@ -6,7 +6,6 @@ use Approval\Enums\ActionEnum;
 use Approval\Enums\ModificationStatusEnum;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Infolists\Components\JsonEntry;
-use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
@@ -15,6 +14,7 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Components\Tab;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -155,6 +155,9 @@ class ModificationResourceSchema
         ];
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function getTableFilter(): array
     {
         return [
