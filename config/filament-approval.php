@@ -9,4 +9,7 @@ return [
 
     'approvalNavigationGroup' => 'Modifications',
     'approvalNavigationSort' => 2,
+
+    'disapprovalNavigationGroup' => 'Modifications',
+    'disapprovalNavigationSort' => 3,
 ];

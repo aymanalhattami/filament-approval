@@ -4,6 +4,7 @@ namespace AymanAlhattami\FilamentApproval;
 
 use AymanAlhattami\FilamentApproval\Filament\Pages\ListModificationRelationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ApprovalResource;
+use AymanAlhattami\FilamentApproval\Filament\Resources\DisapprovalResource;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -20,7 +21,8 @@ class FilamentApprovalPlugin implements Plugin
         $panel
             ->resources([
                 ModificationResource::class,
-                ApprovalResource::class
+                ApprovalResource::class,
+                DisapprovalResource::class
             ])
             ->pages([
                 ListModificationRelationMedia::class,
