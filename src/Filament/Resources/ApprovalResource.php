@@ -35,9 +35,9 @@ class ApprovalResource extends Resource
                     ->translateLabel()
                     ->sortable(),
                 TextColumn::make('approver_type')
-                    ->description(function ($record) {
-                        return $record->approver_id;
-                    })
+                    ->searchable()
+                    ->translateLabel(),
+                TextColumn::make('approver_id')
                     ->searchable()
                     ->translateLabel(),
                 TextColumn::make('reason')

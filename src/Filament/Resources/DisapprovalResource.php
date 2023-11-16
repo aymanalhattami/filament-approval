@@ -34,9 +34,9 @@ class DisapprovalResource extends Resource
                     ->translateLabel()
                     ->sortable(),
                 TextColumn::make('disapprover_type')
-                    ->description(function ($record) {
-                        return $record->disapprover_id;
-                    })
+                    ->searchable()
+                    ->translateLabel(),
+                TextColumn::make('disapprover_id')
                     ->searchable()
                     ->translateLabel(),
                 TextColumn::make('reason')

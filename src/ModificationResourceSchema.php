@@ -48,10 +48,27 @@ class ModificationResourceSchema
                 ->sortable()
                 ->searchable(),
             TextColumn::make('action')
+                ->badge()
+                ->color(function ($state){
+                    return match ($state) {
+                        ActionEnum::Create => 'gray',
+                        ActionEnum::Update => 'success',
+                        ActionEnum::Delete => 'warning',
+                    };
+                })
                 ->translateLabel()
                 ->sortable()
                 ->searchable(),
             TextColumn::make('status')
+                ->badge()
+                ->badge()
+                ->color(function ($state){
+                    return match ($state) {
+                        ModificationStatusEnum::Pending => 'gray',
+                        ModificationStatusEnum::Approved => 'success',
+                        ModificationStatusEnum::Disapproved => 'warning',
+                    };
+                })
                 ->translateLabel()
                 ->sortable()
                 ->searchable(),
@@ -94,8 +111,8 @@ class ModificationResourceSchema
                                 ->label('Id')
                                 ->translateLabel(),
                         ]),
-                        IconEntry::make('action')->translateLabel(),
-                        IconEntry::make('action')->translateLabel(),
+                        TextEntry::make('action')->translateLabel(),
+                        TextEntry::make('status')->translateLabel(),
                         TextEntry::make('approvers_required')->translateLabel(),
                         TextEntry::make('disapprovers_required')->translateLabel(),
                         TextEntry::make('created_at')->translateLabel(),
@@ -125,7 +142,7 @@ class ModificationResourceSchema
                     ->icon('heroicon-m-check')
                     ->requiresConfirmation()
                     ->visible(function ($record) {
-                        return $record->status == ModificationStatusEnum::Pending->value;
+                        return $record->status == ModificationStatusEnum::Pending;
                     }),
                 Action::make('disapprove')
                     ->translateLabel()
@@ -140,7 +157,7 @@ class ModificationResourceSchema
                     ->icon('heroicon-m-x-mark')
                     ->requiresConfirmation()
                     ->visible(function ($record) {
-                        return $record->status == ModificationStatusEnum::Pending->value;
+                        return $record->status == ModificationStatusEnum::Pending;
                     }),
             ]),
         ];
@@ -234,31 +251,31 @@ class ModificationResourceSchema
                 }),
             'pending' => Tab::make('Pending')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', ModificationStatusEnum::Pending->value);
+                    return $query->where('status', ModificationStatusEnum::Pending);
                 }),
             'approved' => Tab::make('Approved')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', ModificationStatusEnum::Approved->value);
+                    return $query->where('status', ModificationStatusEnum::Approved);
                 })
                 ->icon('heroicon-o-check'),
             'disapproved' => Tab::make('Disapproved')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', ModificationStatusEnum::Disapproved->value);
+                    return $query->where('status', ModificationStatusEnum::Disapproved);
                 })
                 ->icon('heroicon-o-x-mark'),
             'create' => Tab::make('Creations')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('action', ActionEnum::Create->value);
+                    return $query->where('action', ActionEnum::Create);
                 })
                 ->icon('heroicon-o-plus'),
             'update' => Tab::make('Update')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('action', ActionEnum::Update->value);
+                    return $query->where('action', ActionEnum::Update);
                 })
                 ->icon('heroicon-o-pencil'),
             'deletion' => Tab::make('Deletion')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('action', ActionEnum::Delete->value);
+                    return $query->where('action', ActionEnum::Delete);
                 })
                 ->icon('heroicon-o-trash'),
         ];
