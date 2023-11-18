@@ -2,6 +2,8 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages;
 
+use Approval\Enums\MediaActionEnum;
+use Approval\Enums\RelationActionEnum;
 use Approval\Models\Modification;
 use Approval\Models\ModificationMedia;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
@@ -42,7 +44,14 @@ class ListModificationMedia extends Page implements HasTable
                     }),
                 TextColumn::make('action')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color(function ($state){
+                        return match ($state) {
+                            MediaActionEnum::Create => 'gray',
+                            MediaActionEnum::Delete, RelationActionEnum::DeleteThenCreate->value => 'warning',
+                        };
+                    }),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->sortable(),

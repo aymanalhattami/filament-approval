@@ -61,7 +61,6 @@ class ModificationResourceSchema
                 ->searchable(),
             TextColumn::make('status')
                 ->badge()
-                ->badge()
                 ->color(function ($state){
                     return match ($state) {
                         ModificationStatusEnum::Pending => 'gray',
@@ -111,8 +110,26 @@ class ModificationResourceSchema
                                 ->label('Id')
                                 ->translateLabel(),
                         ]),
-                        TextEntry::make('action')->translateLabel(),
-                        TextEntry::make('status')->translateLabel(),
+                        TextEntry::make('action')
+                            ->translateLabel()
+                            ->badge()
+                            ->color(function ($state){
+                                return match ($state) {
+                                    ActionEnum::Create => 'gray',
+                                    ActionEnum::Update => 'success',
+                                    ActionEnum::Delete => 'warning',
+                                };
+                            }),
+                        TextEntry::make('status')
+                            ->translateLabel()
+                            ->badge()
+                            ->color(function ($state){
+                                return match ($state) {
+                                    ModificationStatusEnum::Pending => 'gray',
+                                    ModificationStatusEnum::Approved => 'success',
+                                    ModificationStatusEnum::Disapproved => 'warning',
+                                };
+                            }),
                         TextEntry::make('approvers_required')->translateLabel(),
                         TextEntry::make('disapprovers_required')->translateLabel(),
                         TextEntry::make('created_at')->translateLabel(),

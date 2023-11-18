@@ -2,6 +2,7 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages;
 
+use Approval\Enums\RelationActionEnum;
 use Approval\Models\Modification;
 use Approval\Models\ModificationRelation;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
@@ -44,7 +45,15 @@ class ListModificationRelations extends Page implements HasTable
                     ->searchable(),
                 TextColumn::make('action')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color(function ($state){
+                        return match ($state) {
+                            RelationActionEnum::Create->value => 'gray',
+                            RelationActionEnum::Update->value => 'success',
+                            RelationActionEnum::Delete->value, RelationActionEnum::DeleteThenCreate->value, RelationActionEnum::UpdateOrCreate->value => 'warning',
+                        };
+                    }),
                 IconColumn::make('has_media')
                     ->translateLabel()
                     ->state(function ($record) {
@@ -64,7 +73,15 @@ class ListModificationRelations extends Page implements HasTable
                             TextEntry::make('model')
                                 ->translateLabel(),
                             TextEntry::make('action')
-                                ->translateLabel(),
+                                ->translateLabel()
+                                ->badge()
+                                ->color(function ($state){
+                                    return match ($state) {
+                                        RelationActionEnum::Create->value => 'gray',
+                                        RelationActionEnum::Update->value => 'success',
+                                        RelationActionEnum::Delete->value, RelationActionEnum::DeleteThenCreate->value, RelationActionEnum::UpdateOrCreate->value => 'warning',
+                                    };
+                                }),
                             TextEntry::make('created_at'),
                             JsonEntry::make('modifications')
                                 ->translateLabel()
