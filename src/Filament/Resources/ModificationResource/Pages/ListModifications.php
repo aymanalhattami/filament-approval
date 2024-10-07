@@ -2,7 +2,7 @@
 
 namespace AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource\Pages;
 
-use Approval\Enums\ActionEnum;
+use Approval\Enums\Action;
 use Approval\Enums\ModificationStatusEnum;
 use AymanAlhattami\FilamentApproval\Filament\Resources\ModificationResource;
 use AymanAlhattami\FilamentApproval\ModificationResourceSchema;

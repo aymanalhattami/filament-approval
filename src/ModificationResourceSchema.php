@@ -4,6 +4,7 @@ namespace AymanAlhattami\FilamentApproval;
 
 use Approval\Enums\ActionEnum;
 use Approval\Enums\ModificationStatusEnum;
+use Approval\Models\Approval;
 use Approval\Models\Modification;
 use AymanAlhattami\FilamentApproval\Infolists\Components\JsonEntry;
 use Filament\Forms\Components\DatePicker;
@@ -49,13 +50,13 @@ class ModificationResourceSchema
                 ->searchable(),
             TextColumn::make('action')
                 ->badge()
-                ->color(function ($state){
-                    return match ($state) {
-                        ActionEnum::Create => 'gray',
-                        ActionEnum::Update => 'success',
-                        ActionEnum::Delete => 'warning',
-                    };
-                })
+//                ->color(function ($state){
+//                    return match ($state) {
+//                        Action::Create => 'gray',
+//                        Action::Update => 'success',
+//                        Action::Delete => 'warning',
+//                    };
+//                })
                 ->translateLabel()
                 ->sortable()
                 ->searchable(),
@@ -209,10 +210,10 @@ class ModificationResourceSchema
                 })
                 ->searchable()
                 ->multiple(),
-            SelectFilter::make('action')
-                ->options(ActionEnum::toArray())
-                ->searchable()
-                ->multiple(),
+//            SelectFilter::make('action')
+//                ->options(Approval\Enums\Action::class)
+//                ->searchable()
+//                ->multiple(),
             SelectFilter::make('status')
                 ->options(ModificationStatusEnum::toArray())
                 ->searchable()

@@ -21,7 +21,7 @@
         "php": "^8.1",
         "filament/filament": "^3.0",
         "spatie/laravel-package-tools": "^1.12",
-        "aymanalhattami/laravel-approval": "dev-with-relations",
+        "aymanalhattami/laravel-approval": "dev-relations",
         "aymanalhattami/filament-page-with-sidebar": "^2.0"
     },
     "autoload": {
