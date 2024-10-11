@@ -72,18 +72,6 @@ class ModificationResourceSchema
                 ->translateLabel()
                 ->sortable()
                 ->searchable(),
-            IconColumn::make('has_relation')
-                ->translateLabel()
-                ->state(function ($record) {
-                    return $record->modificationRelations()->exists();
-                })
-                ->boolean(),
-            IconColumn::make('has_media')
-                ->translateLabel()
-                ->state(function ($record) {
-                    return $record->modificationMedias()->exists();
-                })
-                ->boolean(),
             TextColumn::make('created_at')
                 ->searchable(),
         ];
